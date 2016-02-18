@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pl.mg.lf.guestbook</groupId>
-	<artifactId>GuestBookLiferay</artifactId>
+	<artifactId>GuestBookLiferay-portlet</artifactId>
 	<packaging>war</packaging>
 	<name>GuestBookLiferay Portlet</name>
 	<version>1.0.0</version>
@@ -17,7 +17,7 @@
 		<liferay.app.server.deploy.dir>C:\programy\liferay-portal-6.2-ce-ga4\tomcat-7.0.42\webapps</liferay.app.server.deploy.dir>
 		<liferay.app.server.lib.global.dir>C:\programy\liferay-portal-6.2-ce-ga4\tomcat-7.0.42\lib\ext</liferay.app.server.lib.global.dir>
 		<liferay.app.server.portal.dir>C:\programy\liferay-portal-6.2-ce-ga4\tomcat-7.0.42\webapps\ROOT</liferay.app.server.portal.dir>
-		<pluginName>${project.artifactId}-${project.version}</pluginName>
+	<!-- 	<pluginName>${project.artifactId}-${project.version}-portlet</pluginName> -->
 	</properties>
 
 	<build>

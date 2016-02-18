@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
  *
@@ -12,10 +11,30 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
---%>
 
-<%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
+package pl.mg.lf.guestbook;
 
-<portlet:defineObjects />
+import com.liferay.portal.NoSuchModelException;
 
-This is the <b>GuestBookLiferay</b>.
+/**
+ * @author mg
+ */
+public class NoSuchEntryException extends NoSuchModelException {
+
+	public NoSuchEntryException() {
+		super();
+	}
+
+	public NoSuchEntryException(String msg) {
+		super(msg);
+	}
+
+	public NoSuchEntryException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
+
+	public NoSuchEntryException(Throwable cause) {
+		super(cause);
+	}
+
+}
