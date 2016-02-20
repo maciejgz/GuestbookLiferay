@@ -3,6 +3,9 @@ package pl.mg.lf.guestbook.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import pl.mg.lf.guestbook.GuestbookNameException;
 import pl.mg.lf.guestbook.model.Guestbook;
 import pl.mg.lf.guestbook.service.base.GuestbookLocalServiceBaseImpl;
@@ -40,6 +43,9 @@ public class GuestbookLocalServiceImpl extends GuestbookLocalServiceBaseImpl {
 	 * guestbook local service.
 	 */
 
+	static final Logger logger = LogManager
+			.getLogger(GuestbookLocalServiceImpl.class);
+
 	public List<Guestbook> getGuestbooks(long groupId) throws SystemException {
 		return guestbookPersistence.findByGroupId(groupId);
 	}
@@ -48,16 +54,17 @@ public class GuestbookLocalServiceImpl extends GuestbookLocalServiceBaseImpl {
 			throws SystemException {
 		return guestbookPersistence.findByGroupId(groupId, start, end);
 	}
-	
-	protected void validate (String name) throws PortalException {
-	    if (Validator.isNull(name)) {
-	       throw new GuestbookNameException();
-	    }
+
+	protected void validate(String name) throws PortalException {
+		if (Validator.isNull(name)) {
+			throw new GuestbookNameException();
+		}
 	}
-	
-	public Guestbook addGuestbook(long userId, String name, 
-		    ServiceContext serviceContext) throws SystemException, PortalException {
-		
+
+	public Guestbook addGuestbook(long userId, String name,
+			ServiceContext serviceContext) throws SystemException,
+			PortalException {
+		logger.debug("add guestbook");
 		long groupId = serviceContext.getScopeGroupId();
 
 		User user = userPersistence.findByPrimaryKey(userId);
@@ -81,11 +88,10 @@ public class GuestbookLocalServiceImpl extends GuestbookLocalServiceBaseImpl {
 		guestbook.setExpandoBridgeAttributes(serviceContext);
 
 		guestbookPersistence.update(guestbook);
-		
-		
-		//permissions
+
+		// permissions
 		resourceLocalService.addResources(user.getCompanyId(), groupId, userId,
-			       Guestbook.class.getName(), guestbookId, false, true, true);
+				Guestbook.class.getName(), guestbookId, false, true, true);
 
 		return guestbook;
 	}
