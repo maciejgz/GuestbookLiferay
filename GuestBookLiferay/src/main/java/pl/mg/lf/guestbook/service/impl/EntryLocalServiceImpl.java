@@ -68,39 +68,40 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 			throw new EntryMessageException();
 		}
 	}
-	
-	
+
 	public Entry addEntry(long userId, long guestbookId, String name,
-	        String email, String message, ServiceContext serviceContext)
-	         throws PortalException, SystemException {
-	    long groupId = serviceContext.getScopeGroupId();
+			String email, String message, ServiceContext serviceContext)
+			throws PortalException, SystemException {
+		long groupId = serviceContext.getScopeGroupId();
 
-	    User user = userPersistence.findByPrimaryKey(userId);
+		User user = userPersistence.findByPrimaryKey(userId);
 
-	    Date now = new Date();
+		Date now = new Date();
 
-	    validate(name, email, message);
+		validate(name, email, message);
 
-	    long entryId = counterLocalService.increment();
+		long entryId = counterLocalService.increment();
 
-	    Entry entry = entryPersistence.create(entryId);
+		Entry entry = entryPersistence.create(entryId);
 
-	    entry.setUuid(serviceContext.getUuid());
-	    entry.setUserId(userId);
-	    entry.setGroupId(groupId);
-	    entry.setCompanyId(user.getCompanyId());
-	    entry.setUserName(user.getFullName());
-	    entry.setCreateDate(serviceContext.getCreateDate(now));
-	    entry.setModifiedDate(serviceContext.getModifiedDate(now));
-	    entry.setExpandoBridgeAttributes(serviceContext);
-	    entry.setGuestbookId(guestbookId);
-	    entry.setName(name);
-	    entry.setEmail(email);
-	    entry.setMessage(message);
+		entry.setUuid(serviceContext.getUuid());
+		entry.setUserId(userId);
+		entry.setGroupId(groupId);
+		entry.setCompanyId(user.getCompanyId());
+		entry.setUserName(user.getFullName());
+		entry.setCreateDate(serviceContext.getCreateDate(now));
+		entry.setModifiedDate(serviceContext.getModifiedDate(now));
+		entry.setExpandoBridgeAttributes(serviceContext);
+		entry.setGuestbookId(guestbookId);
+		entry.setName(name);
+		entry.setEmail(email);
+		entry.setMessage(message);
 
-	    entryPersistence.update(entry);
+		entryPersistence.update(entry);
 
-	    return entry;
+		resourceLocalService.addResources(user.getCompanyId(), groupId, userId,
+				Entry.class.getName(), entryId, false, true, true);
 
+		return entry;
 	}
 }

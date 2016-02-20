@@ -90,7 +90,6 @@ public class GuestbookPortlet extends MVCPortlet {
 			response.setRenderParameter("mvcPath",
 					"/html/guestbook/edit_guestbook.jsp");
 		}
-
 	}
 
 	public void addEntry(ActionRequest request, ActionResponse response)

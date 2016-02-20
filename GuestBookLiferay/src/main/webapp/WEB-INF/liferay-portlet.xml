@@ -27,4 +27,8 @@
 		<role-name>user</role-name>
 		<role-link>User</role-link>
 	</role-mapper>
+<!-- 	<asset-renderer-factory>
+		<workflow-handler>pl.mg.lf.guestbook.workflow.EntryWorkflowHandler</workflow-handler>
+		<workflow-handler>pl.mg.lf.guestbook.workflow.GuestbookWorkflowHandler</workflow-handler>
+	</asset-renderer-factory> -->
 </liferay-portlet-app>
