@@ -15,7 +15,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.security.permission.ResourceActionsUtil;
 import com.liferay.portal.service.ServiceContext;
 
-public class GuestbookWorkflowhandler extends BaseWorkflowHandler {
+public class GuestbookWorkflowHandler extends BaseWorkflowHandler {
 
 	private static final String CLASS_NAME = Guestbook.class.getName();
 
@@ -33,20 +33,16 @@ public class GuestbookWorkflowhandler extends BaseWorkflowHandler {
 	public Object updateStatus(int status,
 			Map<String, Serializable> workflowContext) throws PortalException,
 			SystemException {
-		 long userId = GetterUtil.getLong(
-	                (String)workflowContext.get(WorkflowConstants.CONTEXT_USER_ID));
-	            long guestbookId = GetterUtil.getLong(
-	                (String)workflowContext.get(
-	                    WorkflowConstants.CONTEXT_ENTRY_CLASS_PK));
+		long userId = GetterUtil.getLong((String) workflowContext
+				.get(WorkflowConstants.CONTEXT_USER_ID));
+		long guestbookId = GetterUtil.getLong((String) workflowContext
+				.get(WorkflowConstants.CONTEXT_ENTRY_CLASS_PK));
 
-	            ServiceContext serviceContext = (ServiceContext)workflowContext.get(
-	                "serviceContext");
-	            
-	            
-//TODO return
-//	            return GuestbookLocalServiceUtil.updateStatus(
-//	                userId, guestbookId, status, serviceContext);
-	            return null;
+		ServiceContext serviceContext = (ServiceContext) workflowContext
+				.get("serviceContext");
+
+		return GuestbookLocalServiceUtil.updateStatus(userId, guestbookId,
+				status, serviceContext);
 	}
 
 }

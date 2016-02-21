@@ -1,3 +1,4 @@
+<%@page import="com.liferay.portal.kernel.workflow.WorkflowConstants"%>
 <%@page import="org.apache.logging.log4j.LogManager"%>
 <%@page import="org.apache.logging.log4j.Logger"%>
 <%@include file="/html/init.jsp"%>
@@ -7,6 +8,10 @@
             .getAttribute("guestbookId"));
 %>
 
+<%
+	Guestbook guestbook = (Guestbook) renderRequest
+			.getAttribute(WebKeys.GUESTBOOK);
+%>
 
 
 
@@ -19,7 +24,7 @@
 	<%
 		Logger logger = LogManager.getLogger(Guestbook.class);
         List<Guestbook> guestbooks = GuestbookLocalServiceUtil
-                    .getGuestbooks(scopeGroupId);
+                    .getGuestbooks(scopeGroupId,WorkflowConstants.STATUS_APPROVED);
             for (int i = 0; i < guestbooks.size(); i++) {
                 Guestbook curGuestbook = (Guestbook) guestbooks.get(i);
                 String cssClass = StringPool.BLANK;
@@ -76,11 +81,12 @@
 </aui:button-row>
 
 <liferay-ui:search-container>
-	<liferay-ui:search-container-results
+	<liferay-ui:search-container-results 
 		results="<%=EntryLocalServiceUtil.getEntries(scopeGroupId,
-						guestbookId, searchContainer.getStart(),
+				guestbookId, WorkflowConstants.STATUS_APPROVED,searchContainer.getStart(),
 						searchContainer.getEnd())%>"
-		total="<%=EntryLocalServiceUtil.getEntriesCount()%>" />
+		total="<%=EntryLocalServiceUtil.getEntriesCount(scopeGroupId,
+				guestbookId, WorkflowConstants.STATUS_APPROVED)%>" />
 
 	<liferay-ui:search-container-row
 		className="pl.mg.lf.guestbook.model.Entry" modelVar="entry">

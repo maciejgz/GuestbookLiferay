@@ -31,10 +31,14 @@ public class GuestbookCacheModel implements CacheModel<Guestbook>,
     public long createDate;
     public long modifiedDate;
     public String name;
+    public int status;
+    public long statusByUserId;
+    public String statusByUserName;
+    public long statusDate;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(19);
+        StringBundler sb = new StringBundler(27);
 
         sb.append("{uuid=");
         sb.append(uuid);
@@ -54,6 +58,14 @@ public class GuestbookCacheModel implements CacheModel<Guestbook>,
         sb.append(modifiedDate);
         sb.append(", name=");
         sb.append(name);
+        sb.append(", status=");
+        sb.append(status);
+        sb.append(", statusByUserId=");
+        sb.append(statusByUserId);
+        sb.append(", statusByUserName=");
+        sb.append(statusByUserName);
+        sb.append(", statusDate=");
+        sb.append(statusDate);
         sb.append("}");
 
         return sb.toString();
@@ -98,6 +110,21 @@ public class GuestbookCacheModel implements CacheModel<Guestbook>,
             guestbookImpl.setName(name);
         }
 
+        guestbookImpl.setStatus(status);
+        guestbookImpl.setStatusByUserId(statusByUserId);
+
+        if (statusByUserName == null) {
+            guestbookImpl.setStatusByUserName(StringPool.BLANK);
+        } else {
+            guestbookImpl.setStatusByUserName(statusByUserName);
+        }
+
+        if (statusDate == Long.MIN_VALUE) {
+            guestbookImpl.setStatusDate(null);
+        } else {
+            guestbookImpl.setStatusDate(new Date(statusDate));
+        }
+
         guestbookImpl.resetOriginalValues();
 
         return guestbookImpl;
@@ -114,6 +141,10 @@ public class GuestbookCacheModel implements CacheModel<Guestbook>,
         createDate = objectInput.readLong();
         modifiedDate = objectInput.readLong();
         name = objectInput.readUTF();
+        status = objectInput.readInt();
+        statusByUserId = objectInput.readLong();
+        statusByUserName = objectInput.readUTF();
+        statusDate = objectInput.readLong();
     }
 
     @Override
@@ -144,5 +175,16 @@ public class GuestbookCacheModel implements CacheModel<Guestbook>,
         } else {
             objectOutput.writeUTF(name);
         }
+
+        objectOutput.writeInt(status);
+        objectOutput.writeLong(statusByUserId);
+
+        if (statusByUserName == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(statusByUserName);
+        }
+
+        objectOutput.writeLong(statusDate);
     }
 }

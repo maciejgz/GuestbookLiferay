@@ -295,7 +295,7 @@ public interface GuestbookLocalService extends BaseLocalService,
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<pl.mg.lf.guestbook.model.Guestbook> getGuestbooks(
-        long groupId)
+        long groupId, int status)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -305,6 +305,12 @@ public interface GuestbookLocalService extends BaseLocalService,
 
     public pl.mg.lf.guestbook.model.Guestbook addGuestbook(long userId,
         java.lang.String name,
+        com.liferay.portal.service.ServiceContext serviceContext)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public pl.mg.lf.guestbook.model.Guestbook updateStatus(long userId,
+        long guestbookId, int status,
         com.liferay.portal.service.ServiceContext serviceContext)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;

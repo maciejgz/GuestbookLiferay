@@ -23,6 +23,10 @@ public class GuestbookSoap implements Serializable {
     private Date _createDate;
     private Date _modifiedDate;
     private String _name;
+    private int _status;
+    private long _statusByUserId;
+    private String _statusByUserName;
+    private Date _statusDate;
 
     public GuestbookSoap() {
     }
@@ -39,6 +43,10 @@ public class GuestbookSoap implements Serializable {
         soapModel.setCreateDate(model.getCreateDate());
         soapModel.setModifiedDate(model.getModifiedDate());
         soapModel.setName(model.getName());
+        soapModel.setStatus(model.getStatus());
+        soapModel.setStatusByUserId(model.getStatusByUserId());
+        soapModel.setStatusByUserName(model.getStatusByUserName());
+        soapModel.setStatusDate(model.getStatusDate());
 
         return soapModel;
     }
@@ -157,5 +165,37 @@ public class GuestbookSoap implements Serializable {
 
     public void setName(String name) {
         _name = name;
+    }
+
+    public int getStatus() {
+        return _status;
+    }
+
+    public void setStatus(int status) {
+        _status = status;
+    }
+
+    public long getStatusByUserId() {
+        return _statusByUserId;
+    }
+
+    public void setStatusByUserId(long statusByUserId) {
+        _statusByUserId = statusByUserId;
+    }
+
+    public String getStatusByUserName() {
+        return _statusByUserName;
+    }
+
+    public void setStatusByUserName(String statusByUserName) {
+        _statusByUserName = statusByUserName;
+    }
+
+    public Date getStatusDate() {
+        return _statusDate;
+    }
+
+    public void setStatusDate(Date statusDate) {
+        _statusDate = statusDate;
     }
 }

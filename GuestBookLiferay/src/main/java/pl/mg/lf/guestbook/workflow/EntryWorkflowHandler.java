@@ -40,10 +40,8 @@ public class EntryWorkflowHandler extends BaseWorkflowHandler {
 
 		ServiceContext serviceContext = (ServiceContext) workflowContext
 				.get("serviceContext");
-		// TODO return
-		// return EntryLocalServiceUtil.updateStatus(userId, entryId, status,
-		// serviceContext);
-		return null;
+		return EntryLocalServiceUtil.updateStatus(userId, entryId, status,
+				serviceContext);
 	}
 
 }

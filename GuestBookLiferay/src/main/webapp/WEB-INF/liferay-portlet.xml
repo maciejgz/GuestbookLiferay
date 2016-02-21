@@ -5,6 +5,8 @@
 	<portlet>
 		<portlet-name>guestbook</portlet-name>
 		<icon>/icon.png</icon>
+		<workflow-handler>pl.mg.lf.guestbook.workflow.EntryWorkflowHandler</workflow-handler>
+		<workflow-handler>pl.mg.lf.guestbook.workflow.GuestbookWorkflowHandler</workflow-handler>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<footer-portlet-javascript>
 			/js/main.js
@@ -27,8 +29,4 @@
 		<role-name>user</role-name>
 		<role-link>User</role-link>
 	</role-mapper>
-<!-- 	<asset-renderer-factory>
-		<workflow-handler>pl.mg.lf.guestbook.workflow.EntryWorkflowHandler</workflow-handler>
-		<workflow-handler>pl.mg.lf.guestbook.workflow.GuestbookWorkflowHandler</workflow-handler>
-	</asset-renderer-factory> -->
 </liferay-portlet-app>

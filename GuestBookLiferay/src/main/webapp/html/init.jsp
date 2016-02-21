@@ -25,6 +25,8 @@
 <%@ page import="pl.mg.lf.guestbook.model.Entry" %>
 <%@ page import="pl.mg.lf.guestbook.util.WebKeys" %>
 
+<%@ page import="com.liferay.portal.kernel.workflow.WorkflowConstants" %>
+
 
 <portlet:defineObjects />
 <theme:defineObjects />

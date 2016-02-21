@@ -12,6 +12,8 @@ import pl.mg.lf.guestbook.service.base.EntryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
@@ -43,16 +45,16 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 	 * local service.
 	 */
 
-	public List<Entry> getEntries(long groupId, long guestbookId)
-			throws SystemException {
-
-		return entryPersistence.findByG_G(groupId, guestbookId);
+	public List<Entry> getEntries(long groupId, long guestbookId, int status,
+			int start, int end) throws SystemException {
+		return entryPersistence.findByG_G_S(groupId, guestbookId,
+				WorkflowConstants.STATUS_APPROVED, start, end);
 	}
 
-	public List<Entry> getEntries(long groupId, long guestbookId, int start,
-			int end) throws SystemException {
-
-		return entryPersistence.findByG_G(groupId, guestbookId, start, end);
+	public int getEntriesCount(long groupId, long guestbookId, int status)
+			throws SystemException {
+		return entryPersistence.countByG_G_S(groupId, guestbookId,
+				WorkflowConstants.STATUS_APPROVED);
 	}
 
 	protected void validate(String name, String email, String entry)
@@ -124,8 +126,6 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 			String name, String email, String message,
 			ServiceContext serviceContext) throws PortalException,
 			SystemException {
-		
-		
 
 		long groupId = serviceContext.getScopeGroupId();
 
@@ -142,6 +142,7 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 		entry.setName(name);
 		entry.setEmail(email);
 		entry.setMessage(message);
+		entry.setStatus(WorkflowConstants.STATUS_DRAFT);
 		entry.setModifiedDate(serviceContext.getModifiedDate(now));
 		entry.setExpandoBridgeAttributes(serviceContext);
 
@@ -151,6 +152,38 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 				Entry.class.getName(), entryId,
 				serviceContext.getGroupPermissions(),
 				serviceContext.getGuestPermissions());
+
+		WorkflowHandlerRegistryUtil.startWorkflowInstance(entry.getCompanyId(),
+				entry.getGroupId(), entry.getUserId(), Entry.class.getName(),
+				entry.getPrimaryKey(), entry, serviceContext);
+
+		return entry;
+	}
+
+	public Entry updateStatus(long userId, long entryId, int status,
+			ServiceContext serviceContext) throws PortalException,
+			SystemException {
+
+		User user = userLocalService.getUser(userId);
+		Entry entry = getEntry(entryId);
+
+		entry.setStatus(status);
+		entry.setStatusByUserId(userId);
+		entry.setStatusByUserName(user.getFullName());
+		entry.setStatusDate(new Date());
+
+		entryPersistence.update(entry);
+
+		if (status == WorkflowConstants.STATUS_APPROVED) {
+
+			assetEntryLocalService.updateVisible(Entry.class.getName(),
+					entryId, true);
+
+		} else {
+
+			assetEntryLocalService.updateVisible(Entry.class.getName(),
+					entryId, false);
+		}
 
 		return entry;
 	}

@@ -1,15 +1,16 @@
 package pl.mg.lf.guestbook;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
-import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import pl.mg.lf.guestbook.model.Entry;
 import pl.mg.lf.guestbook.model.Guestbook;
@@ -21,6 +22,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.util.PortalUtil;
@@ -31,6 +33,9 @@ import com.liferay.util.bridges.mvc.MVCPortlet;
  */
 public class GuestbookPortlet extends MVCPortlet {
 
+	private static final Logger logger = LogManager
+			.getLogger(GuestbookPortlet.class);
+
 	@Override
 	public void render(RenderRequest renderRequest,
 			RenderResponse renderResponse) throws PortletException, IOException {
@@ -38,20 +43,18 @@ public class GuestbookPortlet extends MVCPortlet {
 		try {
 			ServiceContext serviceContext = ServiceContextFactory.getInstance(
 					Guestbook.class.getName(), renderRequest);
-
 			long groupId = serviceContext.getScopeGroupId();
 
 			long guestbookId = ParamUtil.getLong(renderRequest, "guestbookId");
 
 			List<Guestbook> guestbooks = GuestbookLocalServiceUtil
-					.getGuestbooks(groupId);
+					.getGuestbooks(groupId, WorkflowConstants.STATUS_APPROVED);
 
 			if (guestbooks.size() == 0) {
 				Guestbook guestbook = GuestbookLocalServiceUtil.addGuestbook(
 						serviceContext.getUserId(), "Main", serviceContext);
 
 				guestbookId = guestbook.getGuestbookId();
-
 			}
 
 			if (!(guestbookId > 0)) {
@@ -64,9 +67,7 @@ public class GuestbookPortlet extends MVCPortlet {
 
 			throw new PortletException(e);
 		}
-
 		super.render(renderRequest, renderResponse);
-
 	}
 
 	public void addGuestbook(ActionRequest request, ActionResponse response)
